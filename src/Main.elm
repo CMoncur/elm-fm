@@ -9,7 +9,13 @@ import View exposing (..)
 -- INIT --
 init : ( Model, Cmd Msg )
 init =
-  ( { counter = 0
+  ( { apiKey    = "2565f3575fabaf43ac6b3261980907d5"
+    , url       = "http://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=Cmoncur&api_key=2565f3575fabaf43ac6b3261980907d5&format=json&limit=5"
+    , user      = "CMoncur"
+    , artist    = ""
+    , track     = ""
+    , imgUrl    = ""
+    , getError  = ""
     }
   , Cmd.none
   )
@@ -17,7 +23,7 @@ init =
 -- SUBSCRIPTIONS --
 subscriptions : Model -> Sub Msg
 subscriptions model =
-  Time.every minute Username
+  Sub.none
 
 -- APP (MAIN) --
 main : Program Never
