@@ -1,14 +1,15 @@
 module Update exposing (..)
 
 import Http
-import Json.Decode as Json
+import Json.Decode as Json exposing (..)
+import Json.Decode.Extra exposing (..)
 import Model exposing (..)
 import Task exposing (..)
-import Time exposing (Time)
+import Time exposing (..)
 
 -- UPDATE --
 type Msg
-  = GetFail Http.Error
+  = GetFail String
   | GetSucceed String
   | GetUserInfo
   | NewUsername String
@@ -16,19 +17,21 @@ type Msg
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
   case msg of
-    GetFail err ->
+    GetFail errMsg ->
       ( model
-          |> putError err
+          |> updateErr True
+          |> updateErrMsg errMsg
       , Cmd.none
       )
     GetSucceed rawJson ->
       ( model
+          |> updateErr False
+          |> updateErrMsg ""
           |> putTrackInfo rawJson
       , Cmd.none
       )
     GetUserInfo ->
       ( model
-          |> makeUrl
       , getUserInfo model.url
       )
     NewUsername newName ->
@@ -38,31 +41,30 @@ update msg model =
       )
 
 -- UPDATE SUPPORTING FUNCTIONS
-decodeJson : Json.Decoder String
-decodeJson =
-  Json.at ["data", "image_url"] Json.string
+decode : Decoder LastFmData
 
 getUserInfo : String -> Cmd Msg
-getUserInfo givenUrl =
-  let url = givenUrl
-  in Task.perform GetFail GetSucceed (Http.get decodeJson url)
-
-makeUrl : Model -> Model
-makeUrl model =
-  { model | url =
-    "http://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user="
-    ++ model.user ++ "&api_key="
-    ++ model.apiKey ++ "&format=json&limit=5"
-  }
-
-putError : Http.Error -> Model -> Model
-putError err model =
-  { model | getError = toString err }
+getUserInfo url =
+  Http.get decode url
+    |> Task.mapError toString
+    |> Task.perform GetFail GetSucceed
 
 putTrackInfo : String -> Model -> Model
-putTrackInfo rawJson model =
-  { model | artist = rawJson }
+putTrackInfo rawJson model = model
+
+updateErr : Bool -> Model -> Model
+updateErr errExists model =
+  { model | err = errExists }
+
+updateErrMsg : String -> Model -> Model
+updateErrMsg msg model =
+  { model | errMsg = msg }
 
 updateUsername : String -> Model -> Model
 updateUsername newName model =
-  { model | user = newName }
+  { model |
+      user = newName,
+      url = "http://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user="
+            ++ newName ++ "&api_key="
+            ++ model.apiKey ++ "&format=json&limit=5"
+  }
