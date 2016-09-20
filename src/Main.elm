@@ -9,11 +9,12 @@ import View exposing (..)
 -- INIT --
 init : String -> ( Model, Cmd Msg )
 init url =
-  ( { apiKey    = "2565f3575fabaf43ac6b3261980907d5"
-    , url       = "http://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=Cmoncur&api_key=2565f3575fabaf43ac6b3261980907d5&format=json&limit=5"
-    , user      = "CMoncur"
-    , err       = False
-    , errMsg    = ""
+  ( { apiKey      = "2565f3575fabaf43ac6b3261980907d5"
+    , url         = "http://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=Cmoncur&api_key=2565f3575fabaf43ac6b3261980907d5&format=json&limit=5"
+    , user        = "CMoncur"
+    , err         = False
+    , errMsg      = ""
+    , lastFmData  = []
     }
   , getUserInfo url
   )

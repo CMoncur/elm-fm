@@ -2,7 +2,6 @@ module Update exposing (..)
 
 import Http
 import Json.Decode as Json exposing (..)
-import Json.Decode.Extra exposing (..)
 import Model exposing (..)
 import Task exposing (..)
 import Time exposing (..)
@@ -10,7 +9,7 @@ import Time exposing (..)
 -- UPDATE --
 type Msg
   = GetFail String
-  | GetSucceed String
+  | GetSucceed ( List Items )
   | GetUserInfo
   | NewUsername String
 
@@ -23,11 +22,11 @@ update msg model =
           |> updateErrMsg errMsg
       , Cmd.none
       )
-    GetSucceed rawJson ->
+    GetSucceed items ->
       ( model
           |> updateErr False
           |> updateErrMsg ""
-          |> putTrackInfo rawJson
+          |> putTrackInfo items
       , Cmd.none
       )
     GetUserInfo ->
@@ -41,16 +40,28 @@ update msg model =
       )
 
 -- UPDATE SUPPORTING FUNCTIONS
-decode : Decoder LastFmData
+decodeData : Decoder Tracks
+decodeData =
+  Json.object1 identity
+    ( Json.at [ "recenttracks", "track" ] <| Json.list decodeTracks )
+
+decodeTracks : Decoder Items
+decodeTracks =
+  Json.object4 Items
+    ( Json.at [ "artist", "#text" ] Json.string ) -- Artist Name
+    ( "name" := Json.string ) -- Track Name
+    ( Json.at [ "album", "#text" ] Json.string ) -- Album Name
+    ( "image" := Json.list ( "#text" := Json.string ) ) -- Album Image URL
 
 getUserInfo : String -> Cmd Msg
 getUserInfo url =
-  Http.get decode url
+  Http.get decodeData url
     |> Task.mapError toString
     |> Task.perform GetFail GetSucceed
 
-putTrackInfo : String -> Model -> Model
-putTrackInfo rawJson model = model
+putTrackInfo : ( List Items ) -> Model -> Model
+putTrackInfo list model =
+  { model | lastFmData = list }
 
 updateErr : Bool -> Model -> Model
 updateErr errExists model =
