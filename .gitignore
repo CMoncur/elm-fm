@@ -2,4 +2,5 @@
 css/.sass-cache
 css/.sass-cache/*
 /elm-stuff
+js/main.js
 lastfm_creds.md
