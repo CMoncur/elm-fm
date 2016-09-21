@@ -1,0 +1,31 @@
+//--------------------------------------------------//
+//--- MIXINS ---------------------------------------//
+//--------------------------------------------------//
+
+//--- Clearfix ---//
+.clear:after {
+	clear: both;
+	content: ' ';
+	display: block;
+}
+
+//--- Media Queries ---//
+@mixin respond-to($name) {
+	@if $name == "mobile" {
+		@media all and (max-width: 450px) {
+			@content;
+		}
+	}
+
+	@else if $name == "tablet" {
+		@media all and (max-width: 767px) {
+			@content;
+		}
+	}
+
+	@else if $name == "desktop" {
+		@media all and (min-width: 1025px) {
+			@content;
+		}
+	}
+}

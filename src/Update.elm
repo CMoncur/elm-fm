@@ -19,7 +19,7 @@ update msg model =
     GetFail errMsg ->
       ( model
           |> updateErr True
-          |> updateErrMsg errMsg
+          |> updateErrMsg "There was an error fetching Last.fm data. Perhaps that user doesn't exist?"
       , Cmd.none
       )
     GetSucceed items ->
@@ -77,5 +77,5 @@ updateUsername newName model =
       user = newName,
       url = "http://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user="
             ++ newName ++ "&api_key="
-            ++ model.apiKey ++ "&format=json&limit=5"
+            ++ model.apiKey ++ "&format=json&limit=11"
   }

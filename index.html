@@ -1,0 +1,18 @@
+<!doctype html>
+<html>
+<head>
+  <title>Elm Mosaic for Last.fm</title>
+  <link href="https://fonts.googleapis.com/css?family=Titillium+Web:200,300,400" rel="stylesheet">
+  <link rel="stylesheet" href='/css/main.css'>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="js/main.js"></script>
+</head>
+<body>
+  <div id="main"></div>
+  <script>
+      var node  = document.getElementById('main')
+        , app   = Elm.Main.embed(node)
+  </script>
+</body>
+</html>
