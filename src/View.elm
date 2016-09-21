@@ -11,28 +11,31 @@ import Update exposing (..)
 -- VIEW --
 view : Model -> Html Msg
 view model =
-  div []
-    [ showAlbum 0 "image_header" model.lastFmData
-    , showAlbum 1 "image_secondary" model.lastFmData
-    , showAlbum 2 "image_tertiary" model.lastFmData
-    , showAlbum 3 "image_tertiary" model.lastFmData
-    , showAlbum 4 "image_tertiary" model.lastFmData
-    , showAlbum 5 "image_tertiary" model.lastFmData
-    , input [ onInput NewUsername, placeholder "Last.fm username", type' "text" ] []
-    , button [ onClick GetUserInfo ] [ text "Search" ]
-    ]
-
-
-showAlbum : Int -> String -> ( List Items ) -> Html Msg
-showAlbum index imgType list =
-  let item =
-    get index (fromList list)
+  let items =
+    List.map showAlbum model.lastFmData
   in
-    case item of
-      Nothing   -> div [] [ text "Empty list" ]
-      Just item ->
-        div [ class imgType ]
-          [ img [ src <| showAlbumArt item.albumImg ] [] ]
+    div [ class "cont" ]
+      [ div [ class "top clear" ]
+          [ h1 [] [ text "elm-fm" ]
+          , input [ onInput NewUsername, placeholder "last.fm handle", type' "text" ] []
+          , button [ onClick GetUserInfo ] []
+          ]
+      , div [ class "cont_track-horizontal clear" ]
+          [ h2 [] [ text ( model.user ++ "'s recently scrobbled" ) ]
+          , div [ class "clear" ] items
+          ]
+      ]
+
+showAlbum : Items -> Html Msg
+showAlbum item =
+  div [ class "track clear" ]
+    [ img [ class "track_cover", src <| showAlbumArt item.albumImg ] []
+    , div [ class "track_overlay" ]
+        [ h5 [] [ text item.artist ]
+        , h5 [] [ text item.track ]
+        , h5 [] [ text item.album ]
+        ]
+    ]
 
 showAlbumArt : ( List String ) -> String
 showAlbumArt imgs =

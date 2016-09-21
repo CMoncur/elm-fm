@@ -77,5 +77,5 @@ updateUsername newName model =
       user = newName,
       url = "http://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user="
             ++ newName ++ "&api_key="
-            ++ model.apiKey ++ "&format=json&limit=11"
+            ++ model.apiKey ++ "&format=json&limit=20"
   }
