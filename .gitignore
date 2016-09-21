@@ -1,6 +1,8 @@
 .DS_Store
 css/.sass-cache
 css/.sass-cache/*
+css/partials
+css/main.scss
 /elm-stuff
 js/main.js
 lastfm_creds.md
