@@ -7,17 +7,24 @@ import Html.Events exposing (..)
 import Model exposing (..)
 import String exposing ( length )
 import Update exposing (..)
+import Time as Time exposing ( Time )
+import Task as Task
 
 -- VIEW --
 view : Model -> Html Msg
 view model =
   let items =
-    List.map showAlbum model.lastFmData
+    List.take 21 model.lastFmData
+      |> List.map ( showAlbum model.time )
   in
     div [ class "cont" ]
       [ div [ class "top clear" ]
           [ h1 [] [ text "elm-fm" ]
-          , input [ onInput NewUsername, placeholder "last.fm handle", type' "text" ] []
+          , input
+              [ onInput NewUsername
+              , placeholder "last.fm handle"
+              , type' "text" ]
+              []
           , button [ onClick GetUserInfo ] []
           ]
       , div [ class "cont_track-horizontal clear" ]
@@ -26,14 +33,21 @@ view model =
           ]
       ]
 
+
 showAlbum : Items -> Html Msg
 showAlbum item =
+-- showAlbum : Time -> Items -> Html Msg
+-- showAlbum time item =
   div [ class "track clear" ]
     [ img [ class "track_cover", src <| showAlbumArt item.albumImg ] []
     , div [ class "track_overlay" ]
-        [ h5 [] [ text item.artist ]
-        , h5 [] [ text item.track ]
-        , h5 [] [ text item.album ]
+        [ div [ class "text-cont" ]
+          [ h5 [] [ text item.artist ]
+          , h6 [] [ text item.track ]
+          , h6 [] [ text item.album ]
+          -- , h6 [] [ text item.listened ]
+          -- , h6 [] [ text <| toString time ]
+          ]
         ]
     ]
 

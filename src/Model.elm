@@ -1,5 +1,7 @@
 module Model exposing (..)
 
+import Time exposing (..)
+
 -- MODEL --
 type alias Model =
   { apiKey      : String
@@ -8,6 +10,7 @@ type alias Model =
   , err         : Bool
   , errMsg      : String
   , lastFmData  : Tracks
+  -- , time        : Time
   }
 
 type alias Tracks = List Items
@@ -17,4 +20,5 @@ type alias Items =
   , track     : String
   , album     : String
   , albumImg  : List String
+  -- , listened  : String
   }

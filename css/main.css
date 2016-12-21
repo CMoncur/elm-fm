@@ -60,6 +60,13 @@ div.cont h2 {
   font-weight: 100;
   padding: 5px 0 10px 2px; }
 
+div.track_overlay {
+  color: #fff; }
+  div.track_overlay h5 {
+    font-weight: 600; }
+  div.track_overlay h6 {
+    font-weight: 300; }
+
 input[type="text"] {
   color: #ddd;
   font-family: 'Titillium Web', sans-serif;
@@ -135,22 +142,33 @@ div.cont_track-horizontal {
     @media all and (max-width: 767px) {
       div.cont_track-horizontal div.track {
         width: 25%; } }
+    div.cont_track-horizontal div.track h5 {
+      font-size: 0.9em; }
+    div.cont_track-horizontal div.track h6 {
+      display: none; }
   div.cont_track-horizontal div.track:first-of-type {
     width: 33.33%; }
     @media all and (max-width: 767px) {
       div.cont_track-horizontal div.track:first-of-type {
         width: 75%; } }
+    div.cont_track-horizontal div.track:first-of-type h5 {
+      font-size: 1.2em; }
+    div.cont_track-horizontal div.track:first-of-type h6 {
+      display: block;
+      font-size: 0.8em; }
   div.cont_track-horizontal div.track:nth-last-child(-n+12) {
     width: 8.333%; }
     @media all and (max-width: 767px) {
       div.cont_track-horizontal div.track:nth-last-child(-n+12) {
         width: 12.5%; } }
-  div.cont_track-horizontal div.track:hover {
-    transform: scale(1.02, 1.02); }
+    div.cont_track-horizontal div.track:nth-last-child(-n+12) h5 {
+      display: none; }
+    div.cont_track-horizontal div.track:nth-last-child(-n+12) h6 {
+      display: none; }
   div.cont_track-horizontal div.track:hover div.track_overlay {
     opacity: 1; }
   div.cont_track-horizontal div.track_overlay {
-    background: linear-gradient(-45deg, rgba(72, 85, 99, 0.9) 0%, rgba(41, 50, 60, 0.9) 100%);
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, transparent 70%);
     border-radius: 5px;
     height: calc(100% - 6px);
     opacity: 0;
@@ -159,6 +177,10 @@ div.cont_track-horizontal {
     top: 3px;
     transition: opacity 0.3s;
     width: calc(100% - 6px); }
+  div.cont_track-horizontal div.text-cont {
+    position: absolute;
+    left: 10px;
+    bottom: 10px; }
   div.cont_track-horizontal img.track_cover {
     border-radius: 5px; }
 

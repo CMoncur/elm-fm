@@ -12,6 +12,7 @@ type Msg
   | GetSucceed ( List Items )
   | GetUserInfo
   | NewUsername String
+  -- | GetNewTime Time
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
@@ -38,6 +39,10 @@ update msg model =
           |> updateUsername newName
       , Cmd.none
       )
+    -- GetNewTime new_time ->
+    --   ( { model | time = new_time }
+    --   , Cmd.none
+    --   )
 
 -- UPDATE SUPPORTING FUNCTIONS
 decodeData : Decoder Tracks
@@ -47,11 +52,13 @@ decodeData =
 
 decodeTracks : Decoder Items
 decodeTracks =
+  -- Json.object5 Items
   Json.object4 Items
     ( Json.at [ "artist", "#text" ] Json.string ) -- Artist Name
     ( "name" := Json.string ) -- Track Name
     ( Json.at [ "album", "#text" ] Json.string ) -- Album Name
     ( "image" := Json.list ( "#text" := Json.string ) ) -- Album Image URL
+    -- ( Json.at [ "date", "uts" ] Json.string ) -- Date Listened
 
 getUserInfo : String -> Cmd Msg
 getUserInfo url =
@@ -77,5 +84,5 @@ updateUsername newName model =
       user = newName,
       url = "http://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user="
             ++ newName ++ "&api_key="
-            ++ model.apiKey ++ "&format=json&limit=20"
+            ++ model.apiKey ++ "&format=json&limit=25"
   }
