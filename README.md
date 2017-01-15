@@ -1,4 +1,4 @@
 # elm-fm
 An Elm app for viewing last.fm activity
 
-## This is very much a work in progress.
+## This repository is used as a sandbox for my Elm meetups and demonstrations.
